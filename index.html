@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Portal do Aluno · Acesso</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: url('https://i.postimg.cc/0NCCZ4vc/file-00000000779471f585f8cb023dfdc1f3.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 0;
+    }
+
+    .key-screen {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .key-card {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(16px);
+      border-radius: 40px;
+      padding: 48px 32px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      border: 1px solid rgba(255, 140, 0, 0.6);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 100, 0, 0.2);
+      animation: fadeSlideUp 0.6s ease-out;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(35px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .key-icon {
+      font-size: 56px;
+      color: #ff9f3a;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 12px #ff7700);
+    }
+
+    .key-input-group {
+      margin: 30px 0 20px;
+      text-align: left;
+    }
+
+    .key-input-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffd9a5;
+      display: block;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .key-input-group label i {
+      color: #ff8c42;
+      margin-right: 8px;
+    }
+
+    .key-input-group input {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(20, 20, 20, 0.9);
+      border: 1.5px solid rgba(255, 120, 0, 0.7);
+      border-radius: 60px;
+      font-size: 16px;
+      color: #fff;
+      font-family: 'Poppins', monospace;
+      transition: all 0.3s;
+      outline: none;
+      letter-spacing: 0.8px;
+    }
+
+    .key-input-group input:focus {
+      border-color: #ff9f3a;
+      box-shadow: 0 0 18px rgba(255, 100, 0, 0.6);
+      background: rgba(0, 0, 0, 0.85);
+    }
+
+    .btn-key {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(95deg, #ff8c00, #ffaa33);
+      border: none;
+      color: #000;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.25s;
+      margin-top: 8px;
+      box-shadow: 0 6px 14px rgba(255, 100, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-key:hover {
+      background: linear-gradient(95deg, #ffaa33, #ffcc66);
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(255, 100, 0, 0.6);
+    }
+
+    /* Botão WhatsApp */
+    .btn-whatsapp {
+      width: 100%;
+      padding: 12px;
+      background: rgba(37, 211, 102, 0.2);
+      border: 1.5px solid #25d366;
+      color: #25d366;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.25s;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      backdrop-filter: blur(4px);
+      text-decoration: none;
+    }
+
+    .btn-whatsapp:hover {
+      background: #25d366;
+      color: #000;
+      border-color: #fff;
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    }
+
+    .error-message {
+      color: #ff8a5c;
+      font-size: 13px;
+      margin-top: 16px;
+      min-height: 35px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 50px;
+      padding: 6px 12px;
+    }
+
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .login-screen.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .login-screen img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ff8c00;
+      box-shadow: 0 0 35px rgba(255, 140, 0, 0.7);
+    }
+
+    .main-content {
+      position: relative;
+      z-index: 10;
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 20px 25px 30px;
+      border-radius: 24px;
+      border: 1px solid #ff8c33;
+      box-shadow: 0 0 25px rgba(255, 100, 0, 0.3);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .logo-top {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #ff9a3c;
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.6);
+      margin-bottom: 15px;
+    }
+
+    .menu-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .menu-buttons button {
+      background: transparent;
+      border: 2px solid #ff8c42;
+      color: #ffbe85;
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+
+    .menu-buttons button.active,
+    .menu-buttons button:hover {
+      background: #ff8c00;
+      color: #000;
+      border-color: #ffaa55;
+      box-shadow: 0 0 10px #ff7700;
+    }
+
+    select, button.action {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #111;
+      color: white;
+      border: 1px solid #ff8c42;
+      border-radius: 12px;
+      font-family: 'Poppins';
+    }
+
+    button.action {
+      background: transparent;
+      border: 2px solid #ff8c42;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.action:hover {
+      background: #ff8c00;
+      color: black;
+    }
+
+    .resultado, .auxilios, .famosos-panel {
+      background: #0a0a0a;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ff8c42;
+      border-radius: 16px;
+      display: none;
+    }
+
+    /* Auxílio - alinhamento vertical */
+    .auxilios label {
+      display: block;
+      margin: 12px 0;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .auxilios label input {
+      margin-right: 10px;
+      transform: scale(1.1);
+      vertical-align: middle;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #222;
+      border-radius: 10px;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .progress-bar-inner {
+      height: 10px;
+      width: 0;
+      background: #ff9f3a;
+      transition: width 3s linear;
+    }
+
+    .famoso-card {
+      background: #111;
+      padding: 12px;
+      margin: 8px 0;
+      border-left: 4px solid #ffaa33;
+      border-radius: 12px;
+    }
+
+    .creditos {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .creditos a {
+      color: #ff8c42;
+      text-decoration: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff8c42;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="keyScreen" class="key-screen">
+  <div class="key-card">
+    <div class="key-icon"><i class="fas fa-key"></i></div>
+    <div class="key-input-group">
+      <label><i class="fas fa-user-graduate"></i> Insira a sua Key abaixo</label>
+      <input type="text" id="mainKeyInput" placeholder="Digite sua key..." autocomplete="off">
+    </div>
+    <button class="btn-key" id="validateMainBtn"><i class="fas fa-arrow-right-to-bracket"></i> Entrar</button>
+    <div id="mainKeyError" class="error-message"></div>
+
+    <!-- NOVO BOTÃO: Não tem Key? Adquira -->
+    <a href="https://wa.me/556481106501?text=oi%20gostaria%20de%20saber%20sobre%20as%20keys" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Não tem Key? Adquira
+    </a>
+  </div>
+</div>
+
+<div id="loginScreen" class="login-screen">
+  <img src="https://i.postimg.cc/26S5CDYs/file-00000000caf871f5a1f63ed46f07b020.png" alt="Logo">
+</div>
+
+<div id="mainApp" class="main-content">
+  <div class="container">
+    <img class="logo-top" src="https://i.postimg.cc/26S5CDYs/file-00000000caf871f5a1f63ed46f07b020.png" alt="Logo">
+    <h1>Sensibilidade / Auxílio</h1>
+    <h2><i class="fas fa-crown"></i> <span id="patenteDisplay"></span></h2>
+    <div class="menu-buttons" id="menuButtons">
+      <button id="btnSensi" class="active">Sensi</button>
+      <button id="btnAuxilio" style="display:none;">Auxílio</button>
+      <button id="btnFamosos" style="display:none;">Sensi de Famosos</button>
+    </div>
+
+    <div id="sensi" style="display: block;">
+      <select id="marca"></select>
+      <select id="modelo"><option value="">Selecione o modelo</option></select>
+      <button class="action" id="gerarSensiBtn">Gerar</button>
+      <div class="resultado" id="resultado"></div>
+    </div>
+
+    <div id="auxilio" class="auxilios" style="display: none;">
+      <label><input type="checkbox" id="calibrar"> Calibrar sensibilidade</label>
+      <label><input type="checkbox" id="reduzir"> Reduzir recuo</label>
+      <label><input type="checkbox" id="precisao"> Aumentar precisão</label>
+      <label><input type="checkbox" id="inputlag"> Retirar input lag</label>
+      <label><input type="checkbox" id="naopassarcabeca"> Não passar da cabeça</label>
+      <button class="action" id="injetarAuxilioBtn">Injetar</button>
+      <div class="progress-bar" id="progress-bar"><div class="progress-bar-inner" id="progress-bar-inner"></div></div>
+      <div class="injection-message" id="injection-message" style="display:none;">Injetado com sucesso!</div>
+    </div>
+
+    <div id="famosos" class="famosos-panel" style="display: none;">
+      <h3><i class="fas fa-star"></i> Sensis de Famosos</h3>
+      <div id="listaFamosos"></div>
+    </div>
+  </div>
+  <div class="creditos">Desenvolvido por <a href="#" style="color:#ff8c42">MestreXit</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCxZoiw8h9ZCGxF1XP871DFIQ2tX40RPkg",
+    authDomain: "mestrexit-327fd.firebaseapp.com",
+    projectId: "mestrexit-327fd",
+    storageBucket: "mestrexit-327fd.firebasestorage.app",
+    messagingSenderId: "352059845970",
+    appId: "1:352059845970:web:45f33fcfb8595de7c6de8b"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const keysCollection = collection(db, "keys");
+
+  // ---------- BASE COMPLETA DE TODOS OS CELULARES (mundo todo) ----------
+  const fullModelos = {
+    Apple: ["iPhone 16 Pro Max", "iPhone 15 Pro", "iPhone 14", "iPhone 13", "iPhone SE (3ª gen)", "iPhone 12", "iPhone 11"],
+    Samsung: ["Galaxy S24 Ultra", "Galaxy S23", "Galaxy S22", "Galaxy A54", "Galaxy Z Fold5", "Galaxy Z Flip5", "Galaxy A15", "Galaxy M54"],
+    Xiaomi: ["Xiaomi 14", "Xiaomi 13 Pro", "Redmi Note 13 Pro+", "Poco F6", "Xiaomi 12T", "Redmi 12", "Poco X6"],
+    Motorola: ["Edge 50 Pro", "Edge 40", "Moto G84", "Moto G54", "Razr 40 Ultra", "Moto E22"],
+    Asus: ["ROG Phone 8", "ROG Phone 7", "ZenFone 10", "ZenFone 9"],
+    Realme: ["GT 6", "GT Neo 5", "12 Pro+", "Realme C55", "Narzo 60"],
+    Huawei: ["P60 Pro", "Mate 60 Pro", "P50 Pocket", "Nova 11", "Y9s"],
+    LG: ["Velvet", "V60 ThinQ", "Wing", "K92"],
+    Sony: ["Xperia 1 V", "Xperia 10 V", "Xperia 5 IV", "Xperia Pro-I"],
+    Infinix: ["Zero 30", "Note 40 Pro", "Hot 40", "Smart 8"],
+    OnePlus: ["OnePlus 12", "OnePlus Nord 4", "OnePlus 11", "OnePlus Open"],
+    Google: ["Pixel 8 Pro", "Pixel 7", "Pixel 6a", "Pixel Fold", "Pixel 8"],
+    Nokia: ["G60", "X30", "G42", "C22"],
+    Nothing: ["Phone (2)", "Phone (2a)", "Phone (1)"],
+    Oppo: ["Find X7", "Reno 11", "A78", "Find N3 Flip"],
+    Vivo: ["X100 Pro", "V30", "Y100", "iQOO 12"],
+    Tecno: ["Camon 30 Pro", "Spark 20", "Pova 6", "Phantom X2"],
+    Itel: ["S23+", "P55", "A70", "RS4"],
+    Micromax: ["IN Note 4", "IN 2b", "Canvas 6", "IN 1"],
+    Lava: ["Blaze Curve", "Agni 2", "Z6", "Storm 5G"],
+    Sharp: ["Aquos R9", "Aquos sense8", "Aquos wish4", "Aquos R8"],
+    Fairphone: ["Fairphone 5", "Fairphone 4", "Fairphone 3+"],
+    CAT: ["S75", "S62 Pro", "S53", "S42 H+"],
+    Blackview: ["BV9800 Pro", "A200 Pro", "Oscal S80", "BL9000"],
+    Ulefone: ["Armor 24", "Power Armor 19T", "Note 18 Ultra"],
+    Doogee: ["V Max", "S100", "N50", "T30 Pro"],
+    ZTE: ["Axon 50 Ultra", "Blade V50", "Nubia RedMagic 9", "Nubia Z60"],
+    Alcatel: ["1S (2024)", "3X", "7 Pro", "Go Flip 5"],
+    TCL: ["40 NxtPaper", "50 SE", "30 XL", "20 R"],
+    Wiko: ["View5", "T60", "Power U30", "Wiko 10"],
+    Meizu: ["20 Pro", "21", "18X", "20 Classic"],
+    Honor: ["Magic6 Pro", "200 Pro", "X9b", "90 GT"],
+    Poco: ["F6 Pro", "X6 Neo", "M6 Pro", "C61"],
+    IQOO: ["Z9", "Neo 9 Pro", "12", "iQOO 11"],
+    Razer: ["Razer Phone 2", "Razer Edge 5G"],
+    BlackBerry: ["Key2", "KeyOne", "Motion"]
+  };
+
+  // Retorna marcas e modelos conforme a patente
+  function getModelosByPatente(patente) {
+    if (patente === 'Bronze') {
+      // POUCAS marcas (4) e apenas 2 modelos cada
+      return {
+        Apple: fullModelos.Apple.slice(0, 2),
+        Samsung: fullModelos.Samsung.slice(0, 2),
+        Xiaomi: fullModelos.Xiaomi.slice(0, 2),
+        Motorola: fullModelos.Motorola.slice(0, 2)
+      };
+    } else if (patente === 'Prata') {
+      // MAIS OU MENOS (12 marcas principais, 4 modelos cada)
+      const prataBrands = [
+        "Apple", "Samsung", "Xiaomi", "Motorola", "Asus", "Realme",
+        "Huawei", "LG", "Sony", "OnePlus", "Google", "Nokia"
+      ];
+      const prataModelos = {};
+      for (let brand of prataBrands) {
+        if (fullModelos[brand]) {
+          prataModelos[brand] = fullModelos[brand].slice(0, 4);
+        }
+      }
+      return prataModelos;
+    } else { // OURO -> MUITAS marcas (todas) com todos os modelos
+      return fullModelos;
+    }
+  }
+
+  let currentModelos = {};
+
+  // Validação key
+  function parseDuration(value, unit) {
+    if (unit === 'permanent' || value <= 0) return null;
+    let ms = 0;
+    if (unit === 'minutes') ms = value * 60000;
+    else if (unit === 'hours') ms = value * 3600000;
+    else if (unit === 'days') ms = value * 86400000;
+    else if (unit === 'months') ms = value * 30 * 86400000;
+    else if (unit === 'years') ms = value * 365 * 86400000;
+    else return null;
+    return { ms };
+  }
+
+  function isKeyExpired(createdAt, expiresIn) {
+    if (!createdAt || !expiresIn || expiresIn === 'permanent') return false;
+    let parts = expiresIn.split(' ');
+    let val = parseInt(parts[0]), unit = parts[1];
+    let duration = parseDuration(val, unit);
+    if (!duration) return false;
+    return Timestamp.now().toMillis() > (createdAt.toMillis() + duration.ms);
+  }
+
+  async function validateMain() {
+    const input = document.getElementById('mainKeyInput').value.trim();
+    const errDiv = document.getElementById('mainKeyError');
+    try {
+      const q = query(keysCollection, where("keyString", "==", input));
+      const snap = await getDocs(q);
+      if (snap.empty) throw new Error("Matrícula inválida");
+      const docData = snap.docs[0].data();
+      if (docData.status !== 'active') throw new Error("Matrícula inativa");
+      if (isKeyExpired(docData.createdAt, docData.expiresIn)) throw new Error("Matrícula expirada");
+      const patente = docData.patente || "Bronze";
+      sessionStorage.setItem("userPatente", patente);
+      showLoginAndProceed(patente);
+    } catch(e) {
+      errDiv.innerHTML = `<i class="fas fa-times-circle"></i> ${e.message}`;
+      setTimeout(() => errDiv.innerHTML = '', 2500);
+    }
+  }
+
+  function showLoginAndProceed(patente) {
+    const keyScreen = document.getElementById('keyScreen');
+    keyScreen.style.opacity = '0';
+    setTimeout(() => {
+      keyScreen.style.display = 'none';
+      const loginScreen = document.getElementById('loginScreen');
+      loginScreen.classList.add('visible');
+      setTimeout(() => {
+        loginScreen.classList.remove('visible');
+        setTimeout(() => {
+          loginScreen.style.display = 'none';
+          document.getElementById('mainApp').style.display = 'block';
+          initAppByPatente(patente);
+        }, 500);
+      }, 1800);
+    }, 500);
+  }
+
+  function atualizarMarcas() {
+    const marcaSelect = document.getElementById('marca');
+    marcaSelect.innerHTML = '<option value="">Selecione a marca</option>';
+    const marcas = Object.keys(currentModelos).sort();
+    for (let marca of marcas) {
+      const opt = document.createElement('option');
+      opt.value = marca;
+      opt.textContent = marca;
+      marcaSelect.appendChild(opt);
+    }
+    document.getElementById('modelo').innerHTML = '<option value="">Selecione o modelo</option>';
+  }
+
+  window.atualizarModelos = function() {
+    let marca = document.getElementById('marca').value;
+    let modeloSelect = document.getElementById('modelo');
+    modeloSelect.innerHTML = '<option value="">Selecione o modelo</option>';
+    if (marca && currentModelos[marca]) {
+      currentModelos[marca].forEach(m => {
+        let opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        modeloSelect.appendChild(opt);
+      });
+    }
+  };
+
+  window.gerarSensibilidade = function() {
+    let modelo = document.getElementById('modelo').value;
+    let resultado = document.getElementById('resultado');
+    if (modelo) {
+      resultado.innerHTML = `<strong>Modelo:</strong> ${modelo}<br><strong>Geral:</strong> ${Math.floor(Math.random()*101)+100}<br><strong>Ponto Vermelho:</strong> ${Math.floor(Math.random()*101)+100}<br><strong>Mira 2x:</strong> ${Math.floor(Math.random()*101)+100}<br><strong>Mira 4x:</strong> ${Math.floor(Math.random()*101)+100}<br><strong>Tamanho Botão:</strong> ${Math.floor(Math.random()*18)+45}`;
+      resultado.style.display = 'block';
+    } else resultado.style.display = 'none';
+  };
+
+  window.injetarAuxilio = function() {
+    let bar = document.getElementById('progress-bar');
+    let inner = document.getElementById('progress-bar-inner');
+    let msg = document.getElementById('injection-message');
+    bar.style.display = 'block';
+    msg.style.display = 'none';
+    let w = 0;
+    let int = setInterval(() => {
+      if (w >= 100) {
+        clearInterval(int);
+        msg.style.display = 'block';
+      } else {
+        w++;
+        inner.style.width = w + '%';
+      }
+    }, 30);
+  };
+
+  function mostrar(menu) {
+    document.getElementById('sensi').style.display = menu === 'sensi' ? 'block' : 'none';
+    document.getElementById('auxilio').style.display = menu === 'auxilio' ? 'block' : 'none';
+    document.getElementById('famosos').style.display = menu === 'famosos' ? 'block' : 'none';
+    document.getElementById('btnSensi').classList.toggle('active', menu === 'sensi');
+    document.getElementById('btnAuxilio').classList.toggle('active', menu === 'auxilio');
+    if (document.getElementById('btnFamosos')) document.getElementById('btnFamosos').classList.toggle('active', menu === 'famosos');
+  }
+
+  function carregarFamosos() {
+    const nomes = [
+      "Nobru (FF)", "Cerol", "Bak (Mibr)", "Xxaku", "Gordox",
+      "Nobzera", "Mts (Mtszin)", "Eusounico", "MestreXit", "Rakin", "Core (Coreano)", "Drax"
+    ];
+    let html = '';
+    nomes.forEach(nome => {
+      // Valores entre 100 e 200
+      const geral = Math.floor(Math.random() * 101) + 100;
+      const pv = Math.floor(Math.random() * 101) + 100;
+      const mira2x = Math.floor(Math.random() * 101) + 100;
+      const mira4x = Math.floor(Math.random() * 101) + 100;
+      html += `<div class="famoso-card"><i class="fas fa-user-astronaut"></i> <strong>${nome}</strong><br>Geral: ${geral} | PV: ${pv} | Mira 2x: ${mira2x} | Mira 4x: ${mira4x}</div>`;
+    });
+    document.getElementById('listaFamosos').innerHTML = html;
+  }
+
+  function initAppByPatente(patente) {
+    currentModelos = getModelosByPatente(patente);
+    atualizarMarcas();
+
+    document.getElementById('patenteDisplay').innerHTML = patente === 'Bronze' ? '🥉 Patente Bronze' : (patente === 'Prata' ? '🥈 Patente Prata' : '🥇 Patente Ouro');
+
+    const btnAux = document.getElementById('btnAuxilio');
+    const btnFam = document.getElementById('btnFamosos');
+    if (patente === 'Bronze') {
+      btnAux.style.display = 'none';
+      btnFam.style.display = 'none';
+      mostrar('sensi');
+    } else if (patente === 'Prata') {
+      btnAux.style.display = 'block';
+      btnFam.style.display = 'none';
+      mostrar('sensi');
+    } else {
+      btnAux.style.display = 'block';
+      btnFam.style.display = 'block';
+      mostrar('sensi');
+      carregarFamosos();
+    }
+
+    document.getElementById('btnSensi').onclick = () => mostrar('sensi');
+    document.getElementById('btnAuxilio').onclick = () => mostrar('auxilio');
+    if (btnFam) document.getElementById('btnFamosos').onclick = () => {
+      carregarFamosos();
+      mostrar('famosos');
+    };
+    document.getElementById('marca').addEventListener('change', atualizarModelos);
+    document.getElementById('gerarSensiBtn').addEventListener('click', gerarSensibilidade);
+    document.getElementById('injetarAuxilioBtn').addEventListener('click', injetarAuxilio);
+  }
+
+  document.getElementById('validateMainBtn').addEventListener('click', validateMain);
+  document.getElementById('mainKeyInput').addEventListener('keypress', e => { if(e.key === 'Enter') validateMain(); });
+</script>
+</body>
+</html>
